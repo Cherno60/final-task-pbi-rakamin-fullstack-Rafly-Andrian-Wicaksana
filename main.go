@@ -2,9 +2,11 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	controller "goAPI/Controller"
 	database "goAPI/Database"
 	router "goAPI/Router"
 	"net/http"
+	"os"
 )
 
 func init() {
@@ -19,9 +21,10 @@ func main() {
 	//router.Run("localhost:9090")
 	r := gin.Default()
 	r.GET("/home", router.Hello)
-	r.POST("/login", router.Login)
+	r.POST("/login", controller.Login)
+	r.GET("/photos", controller.PhotosIndex)
 	r.GET("/register", router.Register)
-	r.Run("localhost:9090")
+	r.Run("localhost:" + os.Getenv("PORT"))
 }
 
 type todo struct {
