@@ -12,6 +12,7 @@ import (
 func init() {
 	database.LoadEnvVariables()
 	database.DBConnect()
+	database.SyncDB()
 }
 
 func main() {
@@ -20,6 +21,7 @@ func main() {
 	//router.GetRouter("home", "none")
 	//router.Run("localhost:9090")
 	r := gin.Default()
+
 	r.GET("/home", router.Hello)
 	r.POST("/login", controller.Login)
 	r.GET("/photos", controller.PhotosIndex)
