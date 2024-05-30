@@ -7,16 +7,21 @@ import (
 )
 
 type Users struct {
-	Uuid      uuid.UUID `json:"uuid" validate:"required" gorm:"type:char(36);primaryKey"`
-	Username  string    `json:"username" validate:"required"`
-	Email     string    `json:"email" validate:"required,unique,email" gorm:"unique"`
-	Password  string    `json:"password" validate:"required,min=6" gorm:"not null"`
-	Photos    []Photos  `gorm:"foreignKey:UserID;references:Uuid"`
+	Uuid      string `json:"uuid" validate:"required" gorm:"type:varchar(255);primaryKey"`
+	Username  string `json:"username" validate:"required"`
+	Email     string `json:"email" validate:"email,required" gorm:"unique"`
+	Password  string `json:"password" validate:"min=6,required" gorm:"not null"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
 
 func (user *Users) BeforeCreate(tx *gorm.DB) (err error) {
-	user.Uuid = uuid.New()
+	//_, errCD := govalidator.ValidateStruct(user)
+	//if errCD != nil {
+	//	err = errCD
+	//	return
+	//}
+	//err = nil
+	user.Uuid = uuid.NewString()
 	return
 }

@@ -7,17 +7,18 @@ import (
 )
 
 type Photos struct {
-	Uuid      uuid.UUID `json:"uuid" gorm:"type:char(36);primaryKey"`
+	Uuid      string    `json:"uuid" gorm:"type:char(36);primaryKey"`
 	Title     string    `json:"title"`
 	Caption   string    `json:"caption"`
 	PhotoUrl  string    `json:"photo_url"`
-	UserID    uuid.UUID `json:"user_id" validate:"required" gorm:"type:char(36);not null"`
+	UserID    string    `json:"user_id" validate:"required" gorm:"type:char(36);not null"`
 	User      *Users    `gorm:"foreignKey:UserID;references:Uuid;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (photos *Photos) BeforeCreate(tx *gorm.DB) (err error) {
-	photos.Uuid = uuid.New()
+
+	photos.Uuid = uuid.NewString()
 	return
 }

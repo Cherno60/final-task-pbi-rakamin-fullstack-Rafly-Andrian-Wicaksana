@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	controller "goAPI/Controller"
 	database "goAPI/Database"
+	helper "goAPI/Helper"
 	router "goAPI/Router"
 	"net/http"
 	"os"
@@ -25,7 +26,7 @@ func main() {
 	r.GET("/home", router.Hello)
 	r.POST("/login", controller.Login)
 	r.GET("/photos", controller.PhotosIndex)
-	r.GET("/register", router.Register)
+	r.POST("/register", helper.UserRegistration)
 	r.Run("localhost:" + os.Getenv("PORT"))
 }
 
