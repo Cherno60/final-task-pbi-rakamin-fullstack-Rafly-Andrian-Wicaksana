@@ -10,7 +10,7 @@ type Users struct {
 	Uuid      string `json:"uuid" validate:"required" gorm:"type:varchar(255);primaryKey"`
 	Username  string `json:"username" validate:"required"`
 	Email     string `json:"email" validate:"email,required" gorm:"unique"`
-	Password  string `json:"password" validate:"min=6,required" gorm:"not null"`
+	Password  string `json:"password" validate:"required,min=6" gorm:"not null"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
