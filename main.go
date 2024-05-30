@@ -2,9 +2,15 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	database "goAPI/Database"
 	router "goAPI/Router"
 	"net/http"
 )
+
+func init() {
+	database.LoadEnvVariables()
+	database.DBConnect()
+}
 
 func main() {
 
