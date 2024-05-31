@@ -16,7 +16,7 @@ func Routes() {
 	r.POST("/users/login", controller.Login)
 	r.GET("/users/logout", controller.Login)
 	r.PUT("/users/edit/:uuid", controller.UserUpdate)
-	r.DELETE("/users/delete/:uuid", controller.Login)
+	r.DELETE("/users/delete/:uuid", controller.UserDelete)
 
 	//Photos
 	r.GET("/photos/", controller.PhotosIndex)

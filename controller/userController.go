@@ -152,3 +152,19 @@ func UserUpdate(c *gin.Context) {
 		"Errors":   nil,
 	})
 }
+
+func UserDelete(c *gin.Context) {
+	uuid := c.Param("uuid")
+	var user models.Users
+	if err := database.DB.First(&user, "uuid = ?", uuid).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	database.DB.Delete(&user, "uuid = ?", uuid)
+	c.JSON(http.StatusOK, Response{
+		Status:   http.StatusOK,
+		Messages: "User Deleted",
+		Errors:   nil,
+	})
+}
