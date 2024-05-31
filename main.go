@@ -2,13 +2,14 @@ package main
 
 import (
 	database "goAPI/database"
+	"goAPI/migrate"
 	router "goAPI/router"
 )
 
 func init() {
 	database.LoadEnvVariables()
 	database.DBConnect()
-	database.SyncDB()
+	migrate.SyncDB()
 }
 
 func main() {
