@@ -90,14 +90,14 @@ paths:
           description: Invalid username supplied
         '404':
           description: User not found
-  /photos/index:
+  /photos/add:
     post:
       tags:
         - photos
       summary: Add a new photos
       description: Add a new photos
       operationId: addPhotos
-  /photos/do:
+  /photos:
     get:
       tags:
         - photos

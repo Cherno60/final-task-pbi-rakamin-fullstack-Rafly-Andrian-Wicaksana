@@ -2,8 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	controller "goAPI/Controller"
-	helper "goAPI/Helper"
+	controller "goAPI/controller"
 	"net/http"
 	"os"
 )
@@ -11,9 +10,17 @@ import (
 func Routes() {
 	r := gin.Default()
 	r.GET("/home", Hello)
+	//Users
+	r.POST("/register", controller.Register)
 	r.POST("/login", controller.Login)
-	r.GET("/photos", controller.PhotosIndex)
-	r.POST("/register", helper.UserRegistration)
+	r.GET("/logout", controller.Login)
+	r.PUT("/logout", controller.Login)
+
+	//Photos
+	r.GET("/photos/", controller.PhotosIndex)
+	r.POST("/photos/add", controller.PhotosIndex)
+	r.PUT("/photos/edit/{id}", controller.PhotosIndex)
+	r.DELETE("/photos", controller.PhotosIndex)
 	r.Run("localhost:" + os.Getenv("PORT"))
 }
 

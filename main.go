@@ -1,8 +1,8 @@
 package main
 
 import (
-	database "goAPI/Database"
-	router "goAPI/Router"
+	database "goAPI/database"
+	router "goAPI/router"
 )
 
 func init() {

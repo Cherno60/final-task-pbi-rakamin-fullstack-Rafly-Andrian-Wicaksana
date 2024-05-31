@@ -2,7 +2,7 @@ package database
 
 import (
 	"fmt"
-	models "goAPI/Models"
+	models "goAPI/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"os"
