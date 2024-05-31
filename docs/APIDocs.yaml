@@ -4,8 +4,12 @@ info:
   description: |-
     This is a API for Golang Internship project, The project is bsic CRUD using a Golang. 
     the CRUD is User can be Login and Register with JWT Authentication. The user can upload photos (URL) and save it in Database
+    
+    created by Rafly Andrian
 
   version: 1.0.0
+  license: Created By Rafly Andrian
+
 externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io

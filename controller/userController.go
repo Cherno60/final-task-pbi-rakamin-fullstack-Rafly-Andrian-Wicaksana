@@ -53,33 +53,37 @@ func GetUserFromID(c *gin.Context) {
 	})
 }
 
-func Login(c *gin.Context) {
+func UserLogin(c *gin.Context) {
 	var LoginRequest LoginRequest
 	if err := c.ShouldBindJSON(&LoginRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	var users []models.Users
-	result := database.DB.Where("email = ?", LoginRequest.Email).Find(&users)
-	if result.Error != nil {
-		c.Status(400)
-		return
-	}
-	if result.RowsAffected < 1 {
+
+	//Check the user existence, by selecting Email first
+	var user models.Users
+	result := database.DB.First(&user, "email = ? AND password = ?", LoginRequest.Email, LoginRequest.Password).Error
+	if result != nil {
 		c.JSON(http.StatusUnauthorized, LoginResponse{
 			Status:   http.StatusUnauthorized,
 			Messages: "Email or password is incorrect",
 		})
 		return
 	}
-	// Do auth
+
+	//Generate JWT Token
+	token, _ := helper.GenerateToken(user)
+	//Set the JWT token to cookies
+	helper.SetCookie(c, token)
+
+	//Return Status Response
 	c.JSON(http.StatusOK, LoginResponse{
 		Status:   http.StatusOK,
-		Messages: "Logined successfully!, Hello " + LoginRequest.Email + "!",
+		Messages: "Logined successfully!, Hello " + user.Username + "!",
 	})
 }
 
-func Register(c *gin.Context) {
+func UserRegister(c *gin.Context) {
 	user := new(models.Users)
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, Response{
@@ -90,6 +94,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
+	//Validate Input
 	errorList := helper.ValidateUser(user)
 	if errorList != nil {
 		c.JSON(http.StatusBadRequest, Response{
@@ -100,6 +105,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
+	//Bind the input
 	userRegister := models.Users{
 		Username:  user.Username,
 		Email:     user.Email,
@@ -108,12 +114,14 @@ func Register(c *gin.Context) {
 		UpdatedAt: time.Now(),
 	}
 
+	//Create user
 	result := database.DB.Create(&userRegister)
 
 	if result.Error != nil {
 		c.Status(400)
 		return
 	}
+	//Return status response
 	c.JSON(http.StatusOK, Response{
 		Status:   http.StatusOK,
 		Messages: "User Created",
@@ -122,6 +130,7 @@ func Register(c *gin.Context) {
 }
 
 func UserUpdate(c *gin.Context) {
+	//Create struct for User Edit
 	var UserEdit struct {
 		Username string
 		Email    string
@@ -136,16 +145,17 @@ func UserUpdate(c *gin.Context) {
 	// Get Parameter
 	uuid := c.Param("uuid")
 
-	// Find the data
+	// Find the data based on parameter uuid
 	var user models.Users
 	database.DB.First(&user, "uuid = ?", uuid)
-	// Update
+	// Update the data
 	database.DB.Model(&user).Updates(models.Users{
 		Username: UserEdit.Username,
 		Email:    UserEdit.Email,
 		Password: UserEdit.Password,
 	})
 
+	//Return Status Response
 	c.JSON(http.StatusOK, gin.H{
 		"Status":   http.StatusOK,
 		"Messages": UserEdit,
@@ -154,17 +164,28 @@ func UserUpdate(c *gin.Context) {
 }
 
 func UserDelete(c *gin.Context) {
+	//Get the Parameter
 	uuid := c.Param("uuid")
+
+	//Check the user existence
 	var user models.Users
 	if err := database.DB.First(&user, "uuid = ?", uuid).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
 
+	//If the user with the uuid exists, delete the user
 	database.DB.Delete(&user, "uuid = ?", uuid)
 	c.JSON(http.StatusOK, Response{
 		Status:   http.StatusOK,
 		Messages: "User Deleted",
 		Errors:   nil,
 	})
+}
+
+// Created By Rafly Andrian
+func UserLogout(c *gin.Context) {
+	//Logout the current user by expiring the cookies
+	c.SetCookie("UserData", "", -1, "/", "localhost", false, true)
+	c.String(http.StatusOK, "You have been logout")
 }
