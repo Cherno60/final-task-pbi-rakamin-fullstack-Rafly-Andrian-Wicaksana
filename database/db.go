@@ -2,7 +2,6 @@ package database
 
 import (
 	"fmt"
-	models "goAPI/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"os"
@@ -18,7 +17,4 @@ func DBConnect() {
 	if err != nil {
 		fmt.Println("Failed to connect to database")
 	}
-}
-func SyncDB() {
-	DB.AutoMigrate(&models.Users{}, &models.Photos{})
 }

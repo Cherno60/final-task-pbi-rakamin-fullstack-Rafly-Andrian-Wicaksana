@@ -1,12 +1,10 @@
 package migrate
 
 import (
+	"goAPI/database"
 	"goAPI/models"
-	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
-
 func SyncDB() {
-	DB.AutoMigrate(&models.Users{}, &models.Photos{})
+	database.DB.AutoMigrate(&models.Users{}, &models.Photos{})
 }

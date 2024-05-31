@@ -2,9 +2,11 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"goAPI/database"
 	helper "goAPI/helper"
 	models "goAPI/models"
 	"net/http"
+	"time"
 )
 
 type Response struct {
@@ -36,13 +38,24 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
-	// If there is no error
-	// Save to DB or perform other actions here
-	//fmt.Println("All OK")
 
+	userRegister := models.Users{
+		Username:  user.Username,
+		Email:     user.Email,
+		Password:  user.Password,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	result := database.DB.Create(&userRegister)
+
+	if result.Error != nil {
+		c.Status(400)
+		return
+	}
 	c.JSON(http.StatusOK, Response{
 		Status:   http.StatusOK,
-		Messages: "Validation Success",
+		Messages: "User Created",
 		Errors:   nil,
 	})
 }

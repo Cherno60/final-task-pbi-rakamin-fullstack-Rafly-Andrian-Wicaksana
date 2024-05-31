@@ -2,10 +2,8 @@ package helper
 
 import (
 	"fmt"
-	"net/http"
 	"reflect"
 
-	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	models "goAPI/models"
 )
@@ -44,36 +42,4 @@ func ValidateUser(user *models.Users) map[string]string {
 		return errorList
 	}
 	return nil
-}
-
-// UserRegistration handles user registration
-func UserRegistration(c *gin.Context) {
-	user := new(models.Users)
-	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, Response{
-			Status:   http.StatusBadRequest,
-			Messages: "Invalid request",
-			Errors:   err.Error(),
-		})
-		return
-	}
-
-	errorList := ValidateUser(user)
-	if errorList != nil {
-		c.JSON(http.StatusBadRequest, Response{
-			Status:   http.StatusBadRequest,
-			Messages: "Validation Error",
-			Errors:   errorList,
-		})
-		return
-	}
-
-	// If there is no error
-	// Save to DB or perform other actions here
-
-	c.JSON(http.StatusOK, Response{
-		Status:   http.StatusOK,
-		Messages: "Validation Success",
-		Errors:   nil,
-	})
 }

@@ -1,13 +1,13 @@
 package models
 
 import (
-	"github.com/google/uuid"
+	"github.com/jaswdr/faker/v2"
 	"gorm.io/gorm"
 	"time"
 )
 
 type Users struct {
-	Uuid      string `json:"uuid" validate:"required" gorm:"type:varchar(255);primaryKey"`
+	Uuid      string `json:"uuid" gorm:"type:varchar(255);primaryKey"`
 	Username  string `json:"username" validate:"required"`
 	Email     string `json:"email" validate:"email,required" gorm:"unique"`
 	Password  string `json:"password" validate:"required,min=6" gorm:"not null"`
@@ -16,12 +16,7 @@ type Users struct {
 }
 
 func (user *Users) BeforeCreate(tx *gorm.DB) (err error) {
-	//_, errCD := govalidator.ValidateStruct(user)
-	//if errCD != nil {
-	//	err = errCD
-	//	return
-	//}
-	//err = nil
-	user.Uuid = uuid.NewString()
+	faker := faker.New()
+	user.Uuid = faker.UUID().V4()
 	return
 }
