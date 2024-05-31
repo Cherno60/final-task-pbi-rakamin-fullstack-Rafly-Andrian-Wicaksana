@@ -11,10 +11,12 @@ func Routes() {
 	r := gin.Default()
 	r.GET("/home", Hello)
 	//Users
-	r.POST("/register", controller.Register)
-	r.POST("/login", controller.Login)
-	r.GET("/logout", controller.Login)
-	r.PUT("/logout", controller.Login)
+	r.GET("/users/:uuid", controller.GetUserFromID)
+	r.POST("/users/register", controller.Register)
+	r.POST("/users/login", controller.Login)
+	r.GET("/users/logout", controller.Login)
+	r.PUT("/users/edit/:uuid", controller.UserUpdate)
+	r.DELETE("/users/delete/:uuid", controller.Login)
 
 	//Photos
 	r.GET("/photos/", controller.PhotosIndex)
