@@ -105,7 +105,7 @@ func PhotoEdit(c *gin.Context) {
 	if checkUser != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"Status":   http.StatusUnauthorized,
-			"Messages": "You don't have permission to edit photo",
+			"Messages": "You don't have permission to edit this photo",
 			"Errors":   nil,
 		})
 		return
@@ -152,7 +152,7 @@ func PhotoDelete(c *gin.Context) {
 	if checkUser != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"Status":   http.StatusUnauthorized,
-			"Messages": "You don't have permission to edit photo",
+			"Messages": "You don't have permission to delete this photo",
 			"Errors":   nil,
 		})
 		return
