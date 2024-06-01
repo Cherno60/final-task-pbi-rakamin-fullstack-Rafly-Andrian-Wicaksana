@@ -121,7 +121,10 @@ func UserRegister(c *gin.Context) {
 	var checkUser models.Users
 	err := database.DB.First(&checkUser, "email = ?", user.Email).Error
 	if err != nil {
+		//Check if there is no record from query
 		if errors.Is(err, gorm.ErrRecordNotFound) {
+			//If there is no email that user inputted exists
+			//then create user
 			//Hash the password
 			hash, _ := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 			hashedPass := string(hash)
