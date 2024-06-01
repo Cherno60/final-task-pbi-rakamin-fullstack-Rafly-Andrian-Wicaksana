@@ -23,8 +23,13 @@ func GenerateToken(user models.Users) (string, error) {
 		},
 	}
 
+	//Get the secretKey
+	secretKey := os.Getenv("SECRET_KEY")
+	//Slice the secretKey from the salt
+	slicedKey := secretKey[25 : len(secretKey)-25]
+	//Generate Token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	ss, err := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
+	ss, err := token.SignedString([]byte(slicedKey))
 	if err != nil {
 		return "", err
 	}
@@ -33,13 +38,18 @@ func GenerateToken(user models.Users) (string, error) {
 }
 
 func ValidateToken(tokenString string) (*string, error) {
-	// Use ParseWithClaims to parse and validate the token
+
+	//Get the secretKey
+	secretKey := os.Getenv("SECRET_KEY")
+	//Slice the secretKey from the salt
+	slicedKey := secretKey[25 : len(secretKey)-25]
+	//Check the token
 	token, err := jwt.ParseWithClaims(tokenString, &JWTClaims{}, func(token *jwt.Token) (interface{}, error) {
 		// Ensure the signing method is as expected
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("unexpected signing method")
 		}
-		return []byte(os.Getenv("SECRET_KEY")), nil
+		return []byte(slicedKey), nil
 	})
 
 	if err != nil {
@@ -58,4 +68,24 @@ func ValidateToken(tokenString string) (*string, error) {
 	//fmt.Println(claims.Uuid)
 
 	return &claims.Uuid, nil
+}
+
+//func GenerateSalt(length int) (string, error) {
+//	// Create a byte slice with the specified length
+//	b := make([]byte, length)
+//
+//	// Read random bytes into the byte slice
+//	_, err := rand.Read(b)
+//	if err != nil {
+//		return "", err
+//	}
+//
+//	// Encode the byte slice to a base64 string and return
+//	return base64.URLEncoding.EncodeToString(b)[:length], nil
+//}
+
+func ExtractTokenString(saltedTokenString, salt string, secretKeyLength int) string {
+	saltLength := len(salt)
+	secretKey := saltedTokenString[saltLength : saltLength+secretKeyLength]
+	return secretKey
 }
