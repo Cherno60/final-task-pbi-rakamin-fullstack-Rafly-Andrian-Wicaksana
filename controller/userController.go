@@ -184,6 +184,19 @@ func UserUpdate(c *gin.Context) {
 	// Get Parameter
 	uuid := c.Param("uuid")
 
+	//Get the JWT token from cookies
+	cookie, _ := c.Cookie("UserData")
+	decodedUuid, _ := helper.ValidateToken(cookie)
+
+	if uuid != *decodedUuid {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"Status":   http.StatusUnauthorized,
+			"Messages": "You don't have permission to edit this user",
+			"Errors":   nil,
+		})
+		return
+	}
+
 	// Find the data based on parameter uuid
 	var user models.Users
 	database.DB.First(&user, "uuid = ?", uuid)
@@ -203,8 +216,21 @@ func UserUpdate(c *gin.Context) {
 }
 
 func UserDelete(c *gin.Context) {
-	//Get the Parameter
+	// Get Parameter
 	uuid := c.Param("uuid")
+
+	//Get the JWT token from cookies
+	cookie, _ := c.Cookie("UserData")
+	decodedUuid, _ := helper.ValidateToken(cookie)
+
+	if uuid != *decodedUuid {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"Status":   http.StatusUnauthorized,
+			"Messages": "You don't have permission to delete this user",
+			"Errors":   nil,
+		})
+		return
+	}
 
 	//Check the user existence
 	var user models.Users
@@ -220,11 +246,15 @@ func UserDelete(c *gin.Context) {
 		Messages: "User Deleted",
 		Errors:   nil,
 	})
+	//Logout the user if user deleted
+	UserLogout(c)
 }
 
 // Created By Rafly Andrian
 func UserLogout(c *gin.Context) {
 	//Logout the current user by expiring the cookies
 	c.SetCookie("UserData", "", -1, "/", "localhost", false, true)
-	c.String(http.StatusOK, "You have been logout")
+	c.JSON(http.StatusOK, gin.H{
+		"Message": "User Logouted Successfully",
+	})
 }
