@@ -16,16 +16,22 @@ func PhotoIndex(c *gin.Context) {
 	decodedUuid, _ := helper.ValidateToken(cookie)
 
 	//Display the user photos
-	var photo []models.Photos
-	if err := database.DB.Find(&photo, "user_id = ?", *decodedUuid).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Photo not found"})
+	var photos []models.Photos
+	if err := database.DB.Find(&photos, "user_id = ?", *decodedUuid).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+		return
+	}
+
+	// Check if the photos slice is empty
+	if len(photos) == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "No photos found for this user"})
 		return
 	}
 
 	//Return the response
 	c.JSON(http.StatusOK, gin.H{
 		"Status":     http.StatusOK,
-		"Photo Data": photo,
+		"Photo Data": photos,
 		"Errors":     nil,
 	})
 
