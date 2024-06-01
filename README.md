@@ -173,7 +173,7 @@ URL : /photos/add
 Request Body:
 ```json
 {
-	"title" : "Photos",
+   "title" : "Photos",
   "caption": "loresdsadmsd",
   "photo_url": "google.com"
 }
@@ -199,7 +199,7 @@ URL : /photos/edit/{photoid}
 Request Body:
 ```json
 {
-	"title" : "newTitle",
+  "title" : "newTitle",
   "caption": "CaptionNew",
   "photoUrl": "newUrl.com"
 }
