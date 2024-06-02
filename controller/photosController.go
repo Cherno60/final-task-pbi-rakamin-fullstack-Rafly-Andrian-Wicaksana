@@ -125,9 +125,10 @@ func PhotoEdit(c *gin.Context) {
 
 	// Update the photos if it passes the check
 	database.DB.Model(&photo).Updates(models.Photos{
-		Title:    PhotoEdit.Title,
-		Caption:  PhotoEdit.Caption,
-		PhotoUrl: PhotoEdit.PhotoUrl,
+		Title:     PhotoEdit.Title,
+		Caption:   PhotoEdit.Caption,
+		PhotoUrl:  PhotoEdit.PhotoUrl,
+		UpdatedAt: time.Now(),
 	})
 
 	//Return the response

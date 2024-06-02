@@ -202,9 +202,10 @@ func UserUpdate(c *gin.Context) {
 	database.DB.First(&user, "uuid = ?", uuid)
 	// Update the data
 	database.DB.Model(&user).Updates(models.Users{
-		Username: UserEdit.Username,
-		Email:    UserEdit.Email,
-		Password: UserEdit.Password,
+		Username:  UserEdit.Username,
+		Email:     UserEdit.Email,
+		Password:  UserEdit.Password,
+		UpdatedAt: time.Now(),
 	})
 
 	//Return Status Response
