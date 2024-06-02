@@ -31,7 +31,7 @@ The project uses UUIDs for user and photo IDs, making them difficult to guess. I
 
 ### Preparations ###
 1. Make sure there is .env is present in the project, if there is no `.env` file, rename `env` file to `.env`
-2. Setup the database username and password in the .env file
+2. Setup the database `username` in `DBUSER` variable and `password` in `DBPASSWORD` in the `.env` file
 4. Make sure there is Mysql database named `db_goapi` in your local machine or you can edit the `DBNAME` inside .env file
 
 ### Installing the project ###
