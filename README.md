@@ -1,24 +1,68 @@
 # GoLang API #
+This API provides basic authentication for user and photo management. Only authorized users can create, edit, and delete their own photos. Each user can only manage their own photos, preventing others from making changes.
+The project uses UUIDs for user and photo IDs, making them difficult to guess. It also employs JSON Web Tokens for authorization, enhancing security by preventing unauthorized users from modifying data.
 
 ## Features ##
-1. [Json Web Token](https://jwt.io/) (for Auth Purposes)
-2. [Validation](https://github.com/asaskevich/govalidator) (for validate user register)
-3. [GodotEnv](https://github.com/joho/godotenv) (All sensitive data is now saved in .env)
-4. UUID (instead of using simple increment ID , using UUID is much simpler, and using [Faker](https://github.com/jaswdr/faker) to automatically generate it)
-5. Salted Secret_key (the secret key is salted so it much safer)
+<details>
+        <summary>1. Json Web token</summary>
+        <p><a href="https://jwt.io/">JWT</a> for users auth purposes</p>
+</details>
+
+<details>
+        <summary>2. Validation</summary>
+        <p><a href="https://github.com/asaskevich/govalidator">GoValidator</a> for validate user register</p>
+</details>
+<details>
+        <summary>3. GodotEnv</summary>
+        <p><a href="https://github.com/joho/godotenv">GodotEnv</a> used for store any sensitive data to local variable in <code>.env</code></p>
+</details>
+<details>
+        <summary>4. Swagger</summary>
+        <p> You can see all the API documentation fromated in <a href="https://swagger.io/">Swagger</a> at <a href="/docs/APIDocs.yaml">docs/APIDocs.yaml</a></p>
+</details>
+<details>
+        <summary>5. UUID</summary>
+        <p>Instead of using simple increment ID , using UUID is much simpler, and using <a href="https://github.com/jaswdr/faker">Faker</a> to automatically generate the UUID</p>
+</details>
+<details>
+        <summary>6. Salted Secret Key</summary>
+        <p>The secret key is salted so it much safer</p>
+</details>
 
 ### Preparations ###
-1. Make sure there is .env is present in the project, if there is no .env, rename env file to .env
-2. Setup the database username and password in the .env file
-4. Make sure there is Mysql database named db_goapi in your local machine
+1. Make sure there is .env is present in the project, if there is no `.env` file, rename `env` file to `.env`
+2. Setup the database `username` in `DBUSER` variable and `password` in `DBPASSWORD` in the `.env` file
+4. Make sure there is Mysql database named `db_goapi` in your local machine or you can edit the `DBNAME` inside `.env` file
 
-#### Run the project ####
-To run the project just run this from cmd inside the project
+### Installing the project ###
+#### 1. First clone this project ####
+```
+git clone https://github.com/Cherno60/final-task-pbi-rakamin-fullstack-Rafly-Andrian-Wicaksana.git
+```
+#### 2. Navigate to inside the project ####
+```bash
+cd final-task-pbi-rakamin-fullstack-Rafly-Andrian-Wicaksana
+```
+#### 3. Install all the dependency ####
+Run this cmd prompt to install all the dependency needed
+```go
+go mod tidy
+```
+#### 4. Run the project ####
+Close any `9090` port first if you have it running from another project, or you can modify the port inside the `.env` file 
+in `PORT` variable
+,run this cmd prompt to run the project and start localserver
 ```golang
 go run main.go
 ```
-after you run it, you can access it in `localhost:9090`
+after you run it, you can access it in 
+```bash
+http://localhost:9090
+```
+#### 5. Test the API ####
+You can test the API using [Postman](https://www.postman.com/) by clicking this button
 
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/9886572-874213a2-d42c-4050-8694-61bed3fa78f8?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D9886572-874213a2-d42c-4050-8694-61bed3fa78f8%26entityType%3Dcollection%26workspaceId%3D003a7aa7-8e1c-48bf-bac7-04d702568a60)
 ## Endpoint ##
 Any endpoint of this API can be accessed in here
 
