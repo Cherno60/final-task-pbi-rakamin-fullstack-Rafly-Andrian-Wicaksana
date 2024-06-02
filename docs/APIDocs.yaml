@@ -107,7 +107,7 @@ paths:
         - photos
       summary: Display all photos
       description: display a photo
-  /photo/edit/{photoId}:
+  /photos/edit/{photoId}:
     put:
       tags:
         - photos
@@ -120,7 +120,7 @@ paths:
           required: true
           schema:
             type: string
-  /photo/delete/{photoId}:
+  /photos/delete/{photoId}:
     delete:
       tags:
         - photos
